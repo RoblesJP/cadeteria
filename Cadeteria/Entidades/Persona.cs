@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace Cadeteria.Entidades
@@ -14,8 +15,11 @@ namespace Cadeteria.Entidades
 
         // propiedades
         public int Id { get => id; set => id = value; }
+        [Required(ErrorMessage = "Este campo no puede estar vacio")]
         public string Nombre { get => nombre; set => nombre = value; }
+        [Required(ErrorMessage = "Este campo no puede estar vacio")]
         public string Direccion { get => direccion; set => direccion = value; }
+        [Required(ErrorMessage = "Este campo no puede estar vacio")]
         public string Telefono { get => telefono; set => telefono = value; }
 
         // constructor

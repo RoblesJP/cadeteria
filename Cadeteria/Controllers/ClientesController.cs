@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Cadeteria.Entidades;
 using Cadeteria.Models;
 using Cadeteria.ViewModels;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace Cadeteria.Controllers
 {
@@ -25,7 +26,7 @@ namespace Cadeteria.Controllers
             return View(clientesViewModel);
         }
 
-        public IActionResult RegistrarClienteForm()
+        public IActionResult RegistrarClienteForm(ModelStateDictionary M)
         {
             return View();
         }
@@ -33,8 +34,16 @@ namespace Cadeteria.Controllers
         [HttpPost]
         public IActionResult RegistrarCliente(Cliente cliente)
         {
-            clientesRepository.Insert(cliente);
-            return Redirect("Index");
+            if (ModelState.IsValid)
+            {
+                clientesRepository.Insert(cliente);
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return View("RegistrarClienteForm");
+            }
+            
         }
     }
 }
