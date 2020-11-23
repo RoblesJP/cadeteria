@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Resources;
 
-namespace Cadeteria
+namespace Cadeteria.Entidades
 {
     public enum Vehiculo
     {
@@ -23,7 +23,7 @@ namespace Cadeteria
         public Vehiculo Vehiculo { get => vehiculo; set => vehiculo = value; }
 
         // constructor
-        public Cadete(string nombre, string direccion, long telefono, Vehiculo vehiculo) : base(nombre, direccion, telefono)
+        public Cadete(string nombre, string direccion, string telefono, Vehiculo vehiculo) : base(nombre, direccion, telefono)
         {
             Id = ++nextId;
             Vehiculo = vehiculo;

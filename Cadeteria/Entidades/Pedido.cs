@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Cadeteria
+namespace Cadeteria.Entidades
 {
     public enum Estado
     {

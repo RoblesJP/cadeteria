@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Cadeteria
+namespace Cadeteria.Entidades
 {
     public class Persona
     {
@@ -10,16 +10,18 @@ namespace Cadeteria
         private int id;
         private string nombre;
         private string direccion;
-        private long telefono;
+        private string telefono;
 
         // propiedades
         public int Id { get => id; set => id = value; }
         public string Nombre { get => nombre; set => nombre = value; }
         public string Direccion { get => direccion; set => direccion = value; }
-        public long Telefono { get => telefono; set => telefono = value; }
+        public string Telefono { get => telefono; set => telefono = value; }
 
         // constructor
-        public Persona(string nombre, string direccion, long telefono)
+        public Persona() { }
+
+        public Persona(string nombre, string direccion, string telefono)
         {
             Nombre = nombre;
             Direccion = direccion;

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Cadeteria
+namespace Cadeteria.Entidades
 {
     class PedidoExpress : Pedido
     {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
-namespace Cadeteria
+namespace Cadeteria.Entidades
 {
     public class Empresa
     {
@@ -27,13 +27,13 @@ namespace Cadeteria
         }
 
         // métodos
-        public void AgregarCadete(string nombre, string direccion, long telefono, Vehiculo vehiculo)
+        public void AgregarCadete(string nombre, string direccion, string telefono, Vehiculo vehiculo)
         {
             Cadete nuevoCadete = new Cadete(nombre, direccion, telefono, vehiculo);
             ListaDeCadetes.Add(nuevoCadete);
         }
 
-        public void AgregarCliente(string nombre, string direccion, long telefono)
+        public void AgregarCliente(string nombre, string direccion, string telefono)
         {
             Cliente nuevoCliente = new Cliente(nombre, direccion, telefono);
             ListaDeClientes.Add(nuevoCliente);
