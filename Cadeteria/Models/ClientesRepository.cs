@@ -31,9 +31,13 @@ namespace Cadeteria.Models
         public void Insert(Cliente cliente)
         {
             string query =  $"INSERT INTO Clientes (nombre, direccion, telefono)" +
-                            $"VALUES ('{cliente.Nombre}', '{cliente.Direccion}', '{cliente.Telefono}')";
+                            $"VALUES (@Nombre, @Direccion, @Telefono)";
             SQLiteData.OpenConnection();
-            SQLiteData.ExecuteSQLiteNonQuery(query);
+            SQLiteData.Sql_cmd.CommandText = query;
+            SQLiteData.Sql_cmd.Parameters.AddWithValue("@Nombre", cliente.Nombre);
+            SQLiteData.Sql_cmd.Parameters.AddWithValue("@Direccion", cliente.Direccion);
+            SQLiteData.Sql_cmd.Parameters.AddWithValue("@Telefono", cliente.Telefono);
+            SQLiteData.Sql_cmd.ExecuteNonQuery();
             SQLiteData.CloseConnection();
         }
     }
