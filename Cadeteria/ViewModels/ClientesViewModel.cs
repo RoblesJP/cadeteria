@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 
 namespace Cadeteria.ViewModels
 {
-    public class ClientesViewModel
+    public class ClienteViewModel
     {
-        public List<Cliente> Clientes { get; set; }
-        public string PageTitle { get; set; }
+        public int Id { get; set; }
+        public string Nombre { get; set; }
+        public string Direccion { get; set; }
+        public string Telefono { get; set; }
     }
 }

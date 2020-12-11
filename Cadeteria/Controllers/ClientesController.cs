@@ -8,25 +8,29 @@ using Cadeteria.Entidades;
 using Cadeteria.Models;
 using Cadeteria.ViewModels;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using AutoMapper;
 
 namespace Cadeteria.Controllers
 {
     public class ClientesController : Controller
     {
+        private readonly IMapper _mapper;
         private ClientesRepository clientesRepository= new ClientesRepository();
+
+        public ClientesController(IMapper mapper)
+        {
+            _mapper = mapper;
+        }
 
         public IActionResult Index()
         {
-            ClientesViewModel clientesViewModel = new ClientesViewModel()
-            {
-                Clientes = clientesRepository.GetAll(),
-                PageTitle = "Lista de Clientes"
-            };
+            List<Cliente> clientes = clientesRepository.GetAll();
+            List<ClienteViewModel> clientesViewModel = _mapper.Map<List<ClienteViewModel>>(clientes);
 
             return View(clientesViewModel);
         }
 
-        public IActionResult RegistrarClienteForm(ModelStateDictionary M)
+        public IActionResult RegistrarClienteForm()
         {
             return View();
         }

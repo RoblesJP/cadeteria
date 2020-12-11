@@ -1,4 +1,4 @@
-﻿@model Cadeteria.ViewModels.ClientesViewModel
+﻿@model List<Cadeteria.ViewModels.ClienteViewModel>
 
 <div class="container text-center">
     <a href="@Url.Action("RegistrarClienteForm", "Clientes")" class="btn btn-primary">
@@ -9,14 +9,14 @@
     </a>
 
     <table class="table table-sm table-bordered w-50 m-auto">
-        <caption>@Model.PageTitle</caption>
+        <caption>Lista de clientes</caption>
         <tr>
             <th>ID</th>
             <th>NOMBRE</th>
             <th>DIRECCION</th>
             <th>TELEFONO</th>
         </tr>
-        @foreach (var c in Model.Clientes)
+        @foreach (var c in Model)
         {
             <tr>
                 <td>@c.Id</td>
