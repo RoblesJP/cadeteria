@@ -2,9 +2,11 @@
 using Cadeteria.Entidades;
 using Cadeteria.Models;
 using Cadeteria.ViewModels;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Data.SQLite;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -14,6 +16,7 @@ namespace Cadeteria.Controllers
     {
         private readonly IMapper _mapper;
         private CadetesRepository cadetesRepository = new CadetesRepository();
+        private PedidosRepository pedidosRepository = new PedidosRepository();
 
         public CadetesController(IMapper mapper)
         {
@@ -22,61 +25,123 @@ namespace Cadeteria.Controllers
 
         public IActionResult Index()
         {
-            List<Cadete> cadetes = cadetesRepository.GetAll();
-            List<CadeteViewModel> cadetesViewModel = _mapper.Map<List<CadeteViewModel>>(cadetes);
+            if (HttpContext.Session.GetString("Username") != null && HttpContext.Session.GetString("Rol") == "Admin")
+            {
+                List<Cadete> cadetes = cadetesRepository.GetAll();
+                List<CadeteViewModel> cadetesViewModel = _mapper.Map<List<CadeteViewModel>>(cadetes);
 
-            return View(cadetesViewModel);
+                return View(cadetesViewModel);
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         public IActionResult RegistrarCadeteForm()
         {
-            return View();
+            if (HttpContext.Session.GetString("Username") != null && HttpContext.Session.GetString("Rol") == "Admin")
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         [HttpPost]
         public IActionResult RegistrarCadete(CadeteViewModel cadeteViewModel)
         {
-            Cadete cadete = _mapper.Map<Cadete>(cadeteViewModel);
-            if (ModelState.IsValid)
+            if (HttpContext.Session.GetString("Username") != null && HttpContext.Session.GetString("Rol") == "Admin")
             {
-                cadetesRepository.Insert(cadete);
-                return RedirectToAction("Index");
+                Cadete cadete = _mapper.Map<Cadete>(cadeteViewModel);
+                if (ModelState.IsValid)
+                {
+                    cadetesRepository.Insert(cadete);
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    return View("RegistrarCadeteForm");
+                }
             }
             else
             {
-                return View("RegistrarCadeteForm");
+                return RedirectToAction("Index", "Home");
             }
         }
 
         public IActionResult ModificarCadeteForm(int id)
         {
-            Cadete cadete = cadetesRepository.GetCadete(id);
-            CadeteViewModel cadeteViewModel = _mapper.Map<CadeteViewModel>(cadete);
-            return View(cadeteViewModel);
+            if (HttpContext.Session.GetString("Username") != null && HttpContext.Session.GetString("Rol") == "Admin")
+            {
+                Cadete cadete = cadetesRepository.GetCadete(id);
+                CadeteViewModel cadeteViewModel = _mapper.Map<CadeteViewModel>(cadete);
+                return View(cadeteViewModel);
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         [HttpPost]
         public IActionResult ModificarCadete(CadeteViewModel cadeteViewModel)
         {
-            if (ModelState.IsValid)
+            if (HttpContext.Session.GetString("Username") != null && HttpContext.Session.GetString("Rol") == "Admin")
             {
-                Cadete cadete = _mapper.Map<Cadete>(cadeteViewModel);
-                cadetesRepository.Update(cadete);
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    Cadete cadete = _mapper.Map<Cadete>(cadeteViewModel);
+                    cadetesRepository.Update(cadete);
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    return View("ModificarCadeteForm", cadeteViewModel);
+                }
             }
             else
             {
-                return View("ModificarCadeteForm", cadeteViewModel);
+                return RedirectToAction("Index", "Home");
             }
         }
 
         public IActionResult EliminarCadete(int id)
         {
-            if (id > 0)
+            if (HttpContext.Session.GetString("Username") != null && HttpContext.Session.GetString("Rol") == "Admin")
             {
-                cadetesRepository.Delete(id);
+                if (id > 0)
+                {
+                    cadetesRepository.Delete(id);
+                }
+                return RedirectToAction("Index");
             }
-            return RedirectToAction("Index");
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+        }
+
+        public IActionResult PedidosAsignados()
+        {
+            if (HttpContext.Session.GetString("Username") != null && HttpContext.Session.GetString("Rol") == "Cadete")
+            {
+                int? id = HttpContext.Session.GetInt32("IdUsuario");
+                string username = HttpContext.Session.GetString("Username");
+                string rol = HttpContext.Session.GetString("Rol");
+
+                Cadete cadete = cadetesRepository.GetAll().Find(c => c.Nombre == username);
+                List<Pedido> pedidosDelCadete = pedidosRepository.GetAll().Where(p => p.Cadete.Id == cadete.Id).ToList();
+                List<PedidoViewModel> pedidosViewModel = _mapper.Map<List<PedidoViewModel>>(pedidosDelCadete);
+
+                return View(pedidosViewModel);
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
     }
 }

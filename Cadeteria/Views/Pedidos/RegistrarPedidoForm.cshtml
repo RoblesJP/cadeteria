@@ -11,7 +11,7 @@
         <div class="form-group">
             <label asp-for="IdCliente">Cliente</label>
             <select asp-for="IdCliente" asp-items="@Model.clientesSelectListItem" class="custom-select custom-select-sm"></select>
-            <span asp-validation-for="clientesSelectListItem" class="text-danger"></span>
+            <span asp-validation-for="IdCliente" class="text-danger"></span>
         </div>
 
         <div class="form-group">

@@ -34,6 +34,7 @@ namespace Cadeteria.Models
 
         public void Insert(Cadete cadete)
         {
+            SQLiteData.CloseConnection();
             string query = @"INSERT INTO Cadetes (idVehiculo, nombre, direccion, telefono)" +
                             @"VALUES (@IdVehiculo, @Nombre, @Direccion, @Telefono)";
             SQLiteData.OpenConnection();
