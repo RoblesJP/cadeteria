@@ -1,41 +1,48 @@
-﻿@model List<Cadeteria.ViewModels.CadeteViewModel>
+﻿@model List<Cadeteria.ViewModels.PedidoViewModel>
 
 <div class="container text-center">
-    <a href="@Url.Action("RegistrarCadeteForm", "Cadetes")" class="btn btn-primary">
+    <a href="@Url.Action("RegistrarPedidoForm", "Pedidos")" class="btn btn-primary">
         <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-person-plus-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
             <path fill-rule="evenodd" d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm7.5-3a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z" />
         </svg>
-        REGISTRAR CADETE
+        REGISTRAR PEDIDO
     </a>
-
-    <table class="table table-sm table-bordered w-50 m-auto">
-        <caption>Lista de cadetes</caption>
+</div>
+<div class="table-responsive">
+    <table class="table table-sm table-bordered">
+        <caption>Lista de pedidos</caption>
         <tr>
-            <th>ID</th>
-            <th>NOMBRE</th>
-            <th>DIRECCION</th>
-            <th>TELEFONO</th>
-            <th>Vehiculo</th>
-            <th></th>
-            <th></th>
+            <th scope="col">ID</th>
+            <th scope="col">CLIENTE</th>
+            <th scope="col">CADETE</th>
+            <th scope="col">TIPO</th>
+            <th scope="col">ESTADO</th>
+            <th scope="col">DESCRIPCION</th>
+            <th scope="col">TIENE CUPON</th>
+            <th scope="col">PRECIO</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
         </tr>
-        @foreach (var c in Model)
+        @foreach (var p in Model)
         {
             <tr>
-                <td>@c.Id</td>
-                <td>@c.Nombre</td>
-                <td>@c.Direccion</td>
-                <td>@c.Telefono</td>
-                <td>@c.Vehiculo</td>
+                <td>@p.Id</td>
+                <td>@p.NombreDeCliente</td>
+                <td>@p.NombreDeCadete</td>
+                <td>@p.Tipo</td>
+                <td>@p.Estado</td>
+                <td>@p.Descripcion</td>
+                <td>@p.TieneCuponDeDescuento</td>
+                <td>@p.Precio</td>
                 <td>
-                    <a href="@Url.Action("ModificarCadeteForm", "Cadetes", new { id = c.Id })" class="btn btn-warning btn-sm">
+                    <a href="@Url.Action("ModificarPedidoForm", "Pedidos", new { id = p.Id })" class="btn btn-warning btn-sm">
                         <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-pencil-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                             <path fill-rule="evenodd" d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z" />
                         </svg>
                     </a>
                 </td>
                 <td>
-                    <a href="@Url.Action("EliminarCadete", "Cadetes", new { id = c.Id })" class="btn btn-danger btn-sm">
+                    <a href="@Url.Action("EliminarPedido", "Pedidos", new { id = p.Id })" class="btn btn-danger btn-sm">
                         <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-trash-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                             <path fill-rule="evenodd" d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5a.5.5 0 0 0-1 0v7a.5.5 0 0 0 1 0v-7z" />
                         </svg>

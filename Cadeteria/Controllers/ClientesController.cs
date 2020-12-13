@@ -15,7 +15,7 @@ namespace Cadeteria.Controllers
     public class ClientesController : Controller
     {
         private readonly IMapper _mapper;
-        private ClientesRepository clientesRepository= new ClientesRepository();
+        private ClientesRepository clientesRepository = new ClientesRepository();
 
         public ClientesController(IMapper mapper)
         {
@@ -36,8 +36,9 @@ namespace Cadeteria.Controllers
         }
 
         [HttpPost]
-        public IActionResult RegistrarCliente(Cliente cliente)
+        public IActionResult RegistrarCliente(ClienteViewModel clienteViewModel)
         {
+            Cliente cliente = _mapper.Map<Cliente>(clienteViewModel);
             if (ModelState.IsValid)
             {
                 clientesRepository.Insert(cliente);
@@ -47,7 +48,37 @@ namespace Cadeteria.Controllers
             {
                 return View("RegistrarClienteForm");
             }
-            
+        }
+        
+        public IActionResult ModificarClienteForm(int id)
+        {
+            Cliente cliente = clientesRepository.GetCliente(id);
+            ClienteViewModel clienteViewModel = _mapper.Map<ClienteViewModel>(cliente);
+            return View(clienteViewModel);
+        }
+
+        [HttpPost]
+        public IActionResult ModificarCliente(ClienteViewModel clienteViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                Cliente cliente = _mapper.Map<Cliente>(clienteViewModel);
+                clientesRepository.Update(cliente);
+                return RedirectToAction("Index");
+            } 
+            else
+            {
+                return View("ModificarClienteForm", clienteViewModel);
+            }
+        }
+
+        public IActionResult EliminarCliente(int id)
+        {
+            if (id > 0)
+            {
+                clientesRepository.Delete(id);
+            }
+            return RedirectToAction("Index");
         }
     }
 }

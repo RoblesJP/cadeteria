@@ -8,18 +8,13 @@ namespace Cadeteria.Entidades
     public class Persona
     {
         // atributos
-        private int id;
         private string nombre;
         private string direccion;
         private string telefono;
 
         // propiedades
-        public int Id { get => id; set => id = value; }
-        [Required(ErrorMessage = "Este campo no puede estar vacio")]
         public string Nombre { get => nombre; set => nombre = value; }
-        [Required(ErrorMessage = "Este campo no puede estar vacio")]
         public string Direccion { get => direccion; set => direccion = value; }
-        [Required(ErrorMessage = "Este campo no puede estar vacio")]
         public string Telefono { get => telefono; set => telefono = value; }
 
         // constructor

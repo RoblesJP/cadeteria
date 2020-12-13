@@ -27,29 +27,6 @@ namespace Cadeteria.Entidades
         }
 
         // métodos
-        public void AgregarCadete(string nombre, string direccion, string telefono, Vehiculo vehiculo)
-        {
-            Cadete nuevoCadete = new Cadete(nombre, direccion, telefono, vehiculo);
-            ListaDeCadetes.Add(nuevoCadete);
-        }
-
-        public void AgregarCliente(string nombre, string direccion, string telefono)
-        {
-            Cliente nuevoCliente = new Cliente(nombre, direccion, telefono);
-            ListaDeClientes.Add(nuevoCliente);
-        }
-
-        public Cadete CadeteConMasPedidosEntregados()
-        {
-            Cadete miCadete = ListaDeCadetes[0];
-            for (int i =  1; i < ListaDeCadetes.Count; i++)
-            {
-                if (ListaDeCadetes[i].CantidadDePedidosEntregados() > miCadete.CantidadDePedidosEntregados())
-                {
-                    miCadete = ListaDeCadetes[i];
-                }
-            }
-            return miCadete;
-        }
+       
     }
 }

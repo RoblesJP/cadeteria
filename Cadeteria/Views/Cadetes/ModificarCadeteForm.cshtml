@@ -1,11 +1,12 @@
-﻿@model Cadeteria.ViewModels.ClienteViewModel
+﻿@model Cadeteria.ViewModels.CadeteViewModel
 @{
-    ViewData["Title"] = "Registrar Cliente";
+    ViewData["Title"] = "Modificar Cadete";
 }
 
-<form asp-action="RegistrarCliente" method="post" class="w-50">
+<form asp-action="ModificarCadete" method="post" class="w-50">
     <fieldset>
-        <legend>REGISTRAR NUEVO CLIENTE</legend>
+        <legend>MODIFICAR CADETE</legend>
+        <input hidden asp-for="Id" />
         <div class="form-group">
             <label asp-for="Nombre"></label>
             <input asp-for="Nombre" class="form-control form-control-sm" />
@@ -21,8 +22,17 @@
             <input asp-for="Telefono" class="form-control form-control-sm" />
             <span asp-validation-for="Telefono" class="text-danger"></span>
         </div>
+        <div class="form-group">
+            <label asp-for="Vehiculo"></label>
+            <select asp-for="Vehiculo" class="form-control">
+                <option value="1">Bicicleta</option>
+                <option value="2">Auto</option>
+                <option value="3">Moto</option>
+            </select>
+            <span asp-validation-for="Vehiculo" class="text-danger"></span>
+        </div>
         <button type="submit" class="btn btn-success btn-sm float-right">
-            REGISTRAR
+            ACEPTAR
         </button>
     </fieldset>
 </form>

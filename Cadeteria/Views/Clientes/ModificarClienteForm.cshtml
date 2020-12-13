@@ -1,11 +1,13 @@
 ﻿@model Cadeteria.ViewModels.ClienteViewModel
+
 @{
-    ViewData["Title"] = "Registrar Cliente";
+    ViewData["Title"] = "Modificar Cliente";
 }
 
-<form asp-action="RegistrarCliente" method="post" class="w-50">
+<form asp-action="ModificarCliente" method="post" class="w-50">
     <fieldset>
-        <legend>REGISTRAR NUEVO CLIENTE</legend>
+        <legend>MODIFICAR CLIENTE</legend>
+        <input hidden asp-for="Id" />
         <div class="form-group">
             <label asp-for="Nombre"></label>
             <input asp-for="Nombre" class="form-control form-control-sm" />
@@ -22,8 +24,7 @@
             <span asp-validation-for="Telefono" class="text-danger"></span>
         </div>
         <button type="submit" class="btn btn-success btn-sm float-right">
-            REGISTRAR
+            ACEPTAR
         </button>
     </fieldset>
 </form>
-

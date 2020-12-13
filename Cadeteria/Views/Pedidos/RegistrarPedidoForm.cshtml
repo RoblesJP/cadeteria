@@ -1,0 +1,51 @@
+﻿@model Cadeteria.ViewModels.RegistrarPedidoViewModel
+@{
+    ViewData["Title"] = "Registrar Pedido";
+}
+
+<form asp-action="RegistrarPedido" method="post" class="w-50">
+    <fieldset>
+        <legend>REGISTRAR NUEVO Pedido</legend>
+        <input hidden asp-for="Id" />
+
+        <div class="form-group">
+            <label asp-for="IdCliente">Cliente</label>
+            <select asp-for="IdCliente" asp-items="@Model.clientesSelectListItem" class="custom-select custom-select-sm"></select>
+            <span asp-validation-for="clientesSelectListItem" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="IdCadete"></label>
+            <select asp-for="IdCadete" asp-items="@Model.cadetesSelectListItem" class="custom-select custom-select-sm"></select>
+            <span asp-validation-for="IdCadete" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Tipo"></label>
+            <select asp-for="Tipo" class="custom-select custom-select-sm">
+                <option value="1">Express</option>
+                <option value="2">Delicado</option>
+                <option value="3">Ecologico</option>
+            </select>
+            <span asp-validation-for="Tipo" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Descripcion"></label>
+            <input asp-for="Descripcion" class="form-control form-control-sm" />
+            <span asp-validation-for="Descripcion" class="text-danger"></span>
+        </div>
+
+        <div class="form-check">
+            <input asp-for="TieneCuponDeDescuento" class="form-check-input" />
+            <label asp-for="TieneCuponDeDescuento" class="form-check-label">Cupon de descuento</label>
+            <span asp-validation-for="TieneCuponDeDescuento" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-success btn-sm float-right">
+            REGISTRAR
+        </button>
+
+    </fieldset>
+</form>
+

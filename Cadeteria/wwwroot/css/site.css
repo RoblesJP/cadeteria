@@ -80,3 +80,8 @@ form {
 table caption {
     caption-side: top !important;
 }
+
+table td, table th {
+    vertical-align: middle !important;
+}
+

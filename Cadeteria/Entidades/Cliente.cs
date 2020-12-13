@@ -9,9 +9,11 @@ namespace Cadeteria.Entidades
         //private static int nextId = 0;
         // atributos
         private List<Pedido> listaDePedidosRealizados;
+        private int id;
 
         // propiedades
         public List<Pedido> ListaDePedidosRealizados { get => listaDePedidosRealizados; set => listaDePedidosRealizados = value; }
+        public int Id { get => id; set => id = value; }
 
         // constructores
         public Cliente() : base() { }
@@ -32,25 +34,6 @@ namespace Cadeteria.Entidades
         public override int CantidadDePedidos()
         {
             return ListaDePedidosRealizados.Count;
-        }
-
-        public Pedido RealizarPedido(Tipo tipo, string descripcion, bool tieneCuponDeDescuento)
-        {
-            Pedido suPedido = null;
-            switch (tipo)
-            {
-                case Tipo.PedidoExpress:
-                    suPedido = new PedidoExpress(descripcion, tieneCuponDeDescuento);
-                    break;
-                case Tipo.PedidoDelicado:
-                    suPedido = new PedidoDelicado(descripcion, tieneCuponDeDescuento);
-                    break;
-                case Tipo.PedidoEcologico:
-                    suPedido = new PedidoEcologico(descripcion, tieneCuponDeDescuento);
-                    break;
-            }
-            ListaDePedidosRealizados.Add(suPedido);
-            return suPedido;
         }
     }
 }
