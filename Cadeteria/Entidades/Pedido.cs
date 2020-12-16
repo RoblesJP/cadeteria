@@ -5,8 +5,7 @@ namespace Cadeteria.Entidades
     public enum Estado
     {
         Pendiente = 1,
-        Asignado = 2,
-        Entregado = 3
+        Entregado = 2
     }
 
     public enum Tipo

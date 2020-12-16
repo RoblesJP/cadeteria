@@ -9,6 +9,7 @@ using Cadeteria.Models;
 using Cadeteria.ViewModels;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 
 namespace Cadeteria.Controllers
 {
@@ -24,61 +25,107 @@ namespace Cadeteria.Controllers
 
         public IActionResult Index()
         {
-            List<Cliente> clientes = clientesRepository.GetAll();
-            List<ClienteViewModel> clientesViewModel = _mapper.Map<List<ClienteViewModel>>(clientes);
+            if (HttpContext.Session.GetString("Username") != null && HttpContext.Session.GetString("Rol") == "Admin")
+            {
+                List<Cliente> clientes = clientesRepository.GetAll();
+                List<ClienteViewModel> clientesViewModel = _mapper.Map<List<ClienteViewModel>>(clientes);
 
-            return View(clientesViewModel);
+                return View(clientesViewModel);
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            
         }
 
         public IActionResult RegistrarClienteForm()
         {
-            return View();
+            if (HttpContext.Session.GetString("Username") != null && HttpContext.Session.GetString("Rol") == "Admin")
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         [HttpPost]
         public IActionResult RegistrarCliente(ClienteViewModel clienteViewModel)
         {
-            Cliente cliente = _mapper.Map<Cliente>(clienteViewModel);
-            if (ModelState.IsValid)
+            if (HttpContext.Session.GetString("Username") != null && HttpContext.Session.GetString("Rol") == "Admin")
             {
-                clientesRepository.Insert(cliente);
-                return RedirectToAction("Index");
+                Cliente cliente = _mapper.Map<Cliente>(clienteViewModel);
+                if (ModelState.IsValid)
+                {
+                    clientesRepository.Insert(cliente);
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    return View("RegistrarClienteForm");
+                }
             }
             else
             {
-                return View("RegistrarClienteForm");
+                return RedirectToAction("Index", "Home");
             }
         }
         
         public IActionResult ModificarClienteForm(int id)
         {
-            Cliente cliente = clientesRepository.GetCliente(id);
-            ClienteViewModel clienteViewModel = _mapper.Map<ClienteViewModel>(cliente);
-            return View(clienteViewModel);
+            if (HttpContext.Session.GetString("Username") != null && HttpContext.Session.GetString("Rol") == "Admin")
+            {
+                Cliente cliente = clientesRepository.GetCliente(id);
+                ClienteViewModel clienteViewModel = _mapper.Map<ClienteViewModel>(cliente);
+                return View(clienteViewModel);
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         [HttpPost]
         public IActionResult ModificarCliente(ClienteViewModel clienteViewModel)
         {
-            if (ModelState.IsValid)
+            if (HttpContext.Session.GetString("Username") != null && HttpContext.Session.GetString("Rol") == "Admin")
             {
-                Cliente cliente = _mapper.Map<Cliente>(clienteViewModel);
-                clientesRepository.Update(cliente);
-                return RedirectToAction("Index");
-            } 
+                if (ModelState.IsValid)
+                {
+                    Cliente cliente = _mapper.Map<Cliente>(clienteViewModel);
+                    clientesRepository.Update(cliente);
+                    return RedirectToAction("Index");
+                } 
+                else
+                {
+                    return View("ModificarClienteForm", clienteViewModel);
+                }
+            }
             else
             {
-                return View("ModificarClienteForm", clienteViewModel);
+                return RedirectToAction("Index", "Home");
             }
         }
 
         public IActionResult EliminarCliente(int id)
         {
-            if (id > 0)
+            if (HttpContext.Session.GetString("Username") != null && HttpContext.Session.GetString("Rol") == "Admin")
             {
-                clientesRepository.Delete(id);
+                if (id > 0)
+                {
+                    PedidosRepository pedidosRepository = new PedidosRepository();
+                    Pedido pedido = pedidosRepository.GetAll().Find(x => x.Cliente.Id == id);
+                    pedidosRepository.Delete(pedido.Id);
+                    clientesRepository.Delete(id); 
+                }
+                return RedirectToAction("Index");
             }
-            return RedirectToAction("Index");
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
     }
 }

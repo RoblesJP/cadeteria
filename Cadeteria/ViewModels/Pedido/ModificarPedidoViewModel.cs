@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Cadeteria.ViewModels
 {
-    public class RegistrarPedidoViewModel
+    public class ModificarPedidoViewModel
     {
         public int Id { get; set; }
 
@@ -21,6 +21,9 @@ namespace Cadeteria.ViewModels
         public Entidades.Tipo Tipo { get; set; }
 
         [Required(ErrorMessage = "Este campo no puede estar vacio")]
+        public Entidades.Estado Estado { get; set; }
+
+        [Required(ErrorMessage = "Este campo no puede estar vacio")]
         [StringLength(50, MinimumLength = 10, ErrorMessage = "La descripcion debe ser entre 10 y 50 caracteres")]
         public string Descripcion { get; set; }
 
@@ -29,6 +32,5 @@ namespace Cadeteria.ViewModels
 
         public List<SelectListItem> clientesSelectListItem { get; set; }
         public List<SelectListItem> cadetesSelectListItem { get; set; }
-
     }
 }

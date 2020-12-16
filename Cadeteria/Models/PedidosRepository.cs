@@ -55,11 +55,12 @@ namespace Cadeteria.Models
 
         public void Update(Pedido pedido)
         {
-            string query = @"UPDATE Pedidos SET idCadete = @IdCadete, idTipo = @IdTipo, idEstado = @IdEstado, descripcion = @Descripcion, cupo = @Cupon, precio = @Precio
+            string query = @"UPDATE Pedidos SET idCliente = @IdCliente, idCadete = @IdCadete, idTipo = @IdTipo, idEstado = @IdEstado, descripcion = @Descripcion, cupon = @Cupon, precio = @Precio
                              WHERE idPedido = @IdPedido;";
             SQLiteData.OpenConnection();
             SQLiteData.Sql_cmd.CommandText = query;
             SQLiteData.Sql_cmd.Parameters.AddWithValue("@IdPedido", pedido.Id);
+            SQLiteData.Sql_cmd.Parameters.AddWithValue("@IdCliente", pedido.Cliente.Id);
             SQLiteData.Sql_cmd.Parameters.AddWithValue("@IdCadete", pedido.Cadete.Id);
             SQLiteData.Sql_cmd.Parameters.AddWithValue("@IdTipo", pedido.Tipo);
             SQLiteData.Sql_cmd.Parameters.AddWithValue("@IdEstado", pedido.Estado);

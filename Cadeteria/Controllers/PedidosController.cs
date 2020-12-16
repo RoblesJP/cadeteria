@@ -2,6 +2,7 @@
 using Cadeteria.Entidades;
 using Cadeteria.Models;
 using Cadeteria.ViewModels;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
@@ -25,75 +26,130 @@ namespace Cadeteria.Controllers
 
         public IActionResult Index()
         {
-            List<Pedido> pedidos = pedidosRepository.GetAll();
-            List<PedidoViewModel> pedidosViewModel = _mapper.Map<List<PedidoViewModel>>(pedidos);
+            if (HttpContext.Session.GetString("Username") != null && HttpContext.Session.GetString("Rol") == "Admin")
+            {
+                List<Pedido> pedidos = pedidosRepository.GetAll();
+                List<PedidoViewModel> pedidosViewModel = _mapper.Map<List<PedidoViewModel>>(pedidos);
 
-            return View(pedidosViewModel);
+                return View(pedidosViewModel);
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         public IActionResult RegistrarPedidoForm()
         {
-            List<Cliente> clientes = clientesRepository.GetAll();
-            List<Cadete> cadetes = cadetesRepository.GetAll();
+            if (HttpContext.Session.GetString("Username") != null && HttpContext.Session.GetString("Rol") == "Admin")
+            {
+                List<Cliente> clientes = clientesRepository.GetAll();
+                List<Cadete> cadetes = cadetesRepository.GetAll();
 
-            List<SelectListItem> clientesSelectListItem = _mapper.Map<List<SelectListItem>>(clientes);
-            List<SelectListItem> cadetesSelectListItem = _mapper.Map<List<SelectListItem>>(cadetes);
+                List<SelectListItem> clientesSelectListItem = _mapper.Map<List<SelectListItem>>(clientes);
+                List<SelectListItem> cadetesSelectListItem = _mapper.Map<List<SelectListItem>>(cadetes);
 
-            RegistrarPedidoViewModel registrarPedidoViewModel = new RegistrarPedidoViewModel();
-            registrarPedidoViewModel.cadetesSelectListItem = cadetesSelectListItem;
-            registrarPedidoViewModel.clientesSelectListItem = clientesSelectListItem;
+                RegistrarPedidoViewModel registrarPedidoViewModel = new RegistrarPedidoViewModel();
+                registrarPedidoViewModel.cadetesSelectListItem = cadetesSelectListItem;
+                registrarPedidoViewModel.clientesSelectListItem = clientesSelectListItem;
 
-            return View(registrarPedidoViewModel);
+                return View(registrarPedidoViewModel);
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         [HttpPost]
         public IActionResult RegistrarPedido(RegistrarPedidoViewModel registrarPedidoViewModel)
         {
-            Cliente cliente = clientesRepository.GetCliente(registrarPedidoViewModel.IdCliente);
-            Cadete cadete = cadetesRepository.GetCadete(registrarPedidoViewModel.IdCadete);
-            Pedido pedido = _mapper.Map<Pedido>(registrarPedidoViewModel);
-            pedido.Cliente = cliente;
-            pedido.Cadete = cadete;
-            if (ModelState.IsValid)
+            if (HttpContext.Session.GetString("Username") != null && HttpContext.Session.GetString("Rol") == "Admin")
             {
-                pedidosRepository.Insert(pedido);
-                return RedirectToAction("Index");
+
+                if (ModelState.IsValid)
+                {
+                    Cliente cliente = clientesRepository.GetCliente(registrarPedidoViewModel.IdCliente);
+                    Cadete cadete = cadetesRepository.GetCadete(registrarPedidoViewModel.IdCadete);
+                    Pedido pedido = _mapper.Map<Pedido>(registrarPedidoViewModel);
+                    pedido.Cliente = cliente;
+                    pedido.Cadete = cadete;
+                    pedidosRepository.Insert(pedido);
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    return View("RegistrarPedidoForm");
+                }
             }
             else
             {
-                return View("RegistrarPedidoForm");
+                return RedirectToAction("Index", "Home");
             }
         }
 
         public IActionResult ModificarPedidoForm(int id)
         {
-            Pedido pedido = pedidosRepository.GetPedido(id);
-            PedidoViewModel pedidoViewModel = _mapper.Map<PedidoViewModel>(pedido);
-            return View(pedidoViewModel);
-        }
-
-        [HttpPost]
-        public IActionResult ModificarPedido(PedidoViewModel pedidoViewModel)
-        {
-            if (ModelState.IsValid)
+            if (HttpContext.Session.GetString("Username") != null && HttpContext.Session.GetString("Rol") == "Admin")
             {
-                Pedido pedido = _mapper.Map<Pedido>(pedidoViewModel);
-                pedidosRepository.Update(pedido);
-                return RedirectToAction("Index");
+                List<Cliente> clientes = clientesRepository.GetAll();
+                List<Cadete> cadetes = cadetesRepository.GetAll();
+
+                List<SelectListItem> clientesSelectListItem = _mapper.Map<List<SelectListItem>>(clientes);
+                List<SelectListItem> cadetesSelectListItem = _mapper.Map<List<SelectListItem>>(cadetes);
+
+                Pedido pedido = pedidosRepository.GetPedido(id);
+                ModificarPedidoViewModel modificarPedidoViewModel = _mapper.Map<ModificarPedidoViewModel>(pedido);
+                modificarPedidoViewModel.cadetesSelectListItem = cadetesSelectListItem;
+                modificarPedidoViewModel.clientesSelectListItem = clientesSelectListItem;
+                return View(modificarPedidoViewModel);
             }
             else
             {
-                return View("ModificarPedidoForm", pedidoViewModel);
+                return RedirectToAction("Index", "Home");
+            }
+        }
+
+        [HttpPost]
+        public IActionResult ModificarPedido(ModificarPedidoViewModel modificarPedidoViewModel)
+        {
+            if (HttpContext.Session.GetString("Username") != null && HttpContext.Session.GetString("Rol") == "Admin")
+            {
+                if (ModelState.IsValid)
+                {
+                    Cliente cliente = clientesRepository.GetCliente(modificarPedidoViewModel.IdCliente);
+                    Cadete cadete = cadetesRepository.GetCadete(modificarPedidoViewModel.IdCadete);
+                    Pedido pedido = _mapper.Map<Pedido>(modificarPedidoViewModel);
+                    pedido.Cliente = cliente;
+                    pedido.Cadete = cadete;
+                    pedidosRepository.Update(pedido);
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    return View("ModificarPedidoForm", modificarPedidoViewModel);
+                }
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
             }
         }
 
         public IActionResult EliminarPedido(int id)
         {
-            if (id > 0)
+            if (HttpContext.Session.GetString("Username") != null && HttpContext.Session.GetString("Rol") == "Admin")
             {
-                pedidosRepository.Delete(id);
+                if (id > 0)
+                {
+                    pedidosRepository.Delete(id);
+                }
+                return RedirectToAction("Index");
             }
-            return RedirectToAction("Index");
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
     }
 }

@@ -143,5 +143,24 @@ namespace Cadeteria.Controllers
                 return RedirectToAction("Index", "Home");
             }
         }
+
+        public IActionResult EntregarPedido(int id)
+        {
+            if (HttpContext.Session.GetString("Username") != null && HttpContext.Session.GetString("Rol") == "Cadete")
+            {
+                Pedido pedido = pedidosRepository.GetPedido(id);
+                if (pedido.Estado != Estado.Entregado)
+                {
+                    pedido.Estado = Estado.Entregado;
+                    pedidosRepository.Update(pedido);
+                }
+                return RedirectToAction("PedidosAsignados");
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+        }
     }
 }
