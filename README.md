@@ -4,15 +4,15 @@
 USER ROL 
 [username, password]
 
-ADMIN 
+ADMIN   
 [admin, admin]
 
-CADETE
+CADETE  
 [Carlos, 123456]
 
-CLIENTE
-[Jose, 123456]
-[Pedro, 123456]
+CLIENTE  
+[Jose, 123456]  
+[Pedro, 123456]  
 
  
 tpnro4-RoblesJP created by GitHub Classroom
