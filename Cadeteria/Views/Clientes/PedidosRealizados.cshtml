@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<Cadeteria.ViewModels.PedidoViewModel>
 
 @{
-    ViewData["Title"] = "PedidosAsignados";
+    ViewData["Title"] = "PedidosRealizados";
 }
 
-<h1>Pedidos asignados a @Html.DisplayFor(model => model.First().NombreDeCadete)</h1>
+<h1>Pedidos realizados por @Html.DisplayFor(model => model.First().NombreDeCliente)</h1>
 
 <table class="table table-sm">
     <thead>
@@ -13,7 +13,7 @@
                 @Html.DisplayNameFor(model => model.Id)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.NombreDeCliente)
+                @Html.DisplayNameFor(model => model.NombreDeCadete)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Tipo)
@@ -30,7 +30,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.Precio)
             </th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -40,7 +39,7 @@
                 @Html.DisplayFor(modelItem => item.Id)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.NombreDeCliente)
+                @Html.DisplayFor(modelItem => item.NombreDeCadete)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Tipo)
@@ -57,17 +56,6 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Precio)
             </td>
-            @if (item.Estado != Cadeteria.Entidades.Estado.Entregado)
-            {
-                <td>
-                    <a href="@Url.Action("EntregarPedido", "Cadetes", new { id = item.Id })" class="btn btn-success btn-sm">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
-                            <path fill-rule="evenodd" d="M10.97 4.97a.75.75 0 0 1 1.071 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.236.236 0 0 1 .02-.022z" />
-                        </svg>
-                    </a>
-                </td>
-            }
-
         </tr>
 }
     </tbody>

@@ -10,6 +10,10 @@ namespace Cadeteria.ViewModels
     {
         public int Id { get; set; }
 
+        public int CantPedidosAsignados { get; set; }
+
+        public int CantPedidosEntregados { get; set; }
+
         [Required(ErrorMessage = "Este campo no puede estar vacio")]
         public string Nombre { get; set; }
 

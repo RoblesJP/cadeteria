@@ -133,7 +133,7 @@ namespace Cadeteria.Controllers
                 string rol = HttpContext.Session.GetString("Rol");
 
                 Cadete cadete = cadetesRepository.GetAll().Find(c => c.Nombre == username);
-                List<Pedido> pedidosDelCadete = pedidosRepository.GetAll().Where(p => p.Cadete.Id == cadete.Id).ToList();
+                List<Pedido> pedidosDelCadete = pedidosRepository.GetPedidosDeCadete(cadete);
                 List<PedidoViewModel> pedidosViewModel = _mapper.Map<List<PedidoViewModel>>(pedidosDelCadete);
 
                 return View(pedidosViewModel);

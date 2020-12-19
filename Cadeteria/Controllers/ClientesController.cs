@@ -17,6 +17,7 @@ namespace Cadeteria.Controllers
     {
         private readonly IMapper _mapper;
         private ClientesRepository clientesRepository = new ClientesRepository();
+        private PedidosRepository pedidosRepository = new PedidosRepository();
 
         public ClientesController(IMapper mapper)
         {
@@ -121,6 +122,26 @@ namespace Cadeteria.Controllers
                     clientesRepository.Delete(id); 
                 }
                 return RedirectToAction("Index");
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+        }
+
+        public IActionResult PedidosRealizados()
+        {
+            if (HttpContext.Session.GetString("Username") != null && HttpContext.Session.GetString("Rol") == "Cliente")
+            {
+                int? id = HttpContext.Session.GetInt32("IdUsuario");
+                string username = HttpContext.Session.GetString("Username");
+                string rol = HttpContext.Session.GetString("Rol");
+
+                Cliente cliente = clientesRepository.GetAll().Find(c => c.Nombre == username);
+                List<Pedido> pedidosDelCliente = pedidosRepository.GetAll().Where(p => p.Cliente.Id == cliente.Id).ToList();
+                List<PedidoViewModel> pedidosViewModel = _mapper.Map<List<PedidoViewModel>>(pedidosDelCliente);
+
+                return View(pedidosViewModel);
             }
             else
             {

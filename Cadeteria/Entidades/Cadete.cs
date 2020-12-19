@@ -18,11 +18,15 @@ namespace Cadeteria.Entidades
         private Vehiculo vehiculo;
         private List<Pedido> listaDePedidos;
         private int id;
+        private int cantPedidosEntregados;
+        private int cantPedidosAsignados;
 
         // propiedades
         public List<Pedido> ListaDePedidos { get => listaDePedidos; set => listaDePedidos = value; }
         public Vehiculo Vehiculo { get => vehiculo; set => vehiculo = value; }
         public int Id { get => id; set => id = value; }
+        public int CantPedidosEntregados { get => cantPedidosEntregados; set => cantPedidosEntregados = value; }
+        public int CantPedidosAsignados { get => cantPedidosAsignados; set => cantPedidosAsignados = value; }
 
         // constructor
         public Cadete() : base() { }
@@ -35,5 +39,21 @@ namespace Cadeteria.Entidades
         }
 
         // métodos
+        public bool PuedeEntregar(Pedido pedido)
+        {
+            if 
+                (
+                    pedido.Tipo == Tipo.Express && vehiculo == Vehiculo.Moto ||
+                    pedido.Tipo == Tipo.Delicado && vehiculo == Vehiculo.Auto ||
+                    pedido.Tipo == Tipo.Ecologico && vehiculo == Vehiculo.Bicicleta
+                )
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }

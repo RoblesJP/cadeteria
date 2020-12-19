@@ -48,6 +48,13 @@
                                 </li>
                             }
 
+                            @if (HttpContextAccessor.HttpContext.Session.GetString("Rol") == "Cliente")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Clientes" asp-action="PedidosRealizados">Pedidos</a>
+                                </li>
+                            }
+
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Login" asp-action="Logout">Logout</a>
                             </li>

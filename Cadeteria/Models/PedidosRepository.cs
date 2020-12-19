@@ -108,5 +108,62 @@ namespace Cadeteria.Models
             SQLiteData.CloseConnection();
             return pedido;
         }
+
+        public List<Pedido> GetPedidosDeCadete(Cadete cadete)
+        {
+            List<Pedido> ListaDePedidos = new List<Pedido>();
+            ClientesRepository clientesRepository = new ClientesRepository();
+            string query = @"SELECT idPedido, idCliente, idCadete, idTipo, idEstado, descripcion, cupon
+                             FROM Pedidos
+                             WHERE idCadete = @IdCadete AND activo = 1;";
+            SQLiteData.OpenConnection();
+            SQLiteData.Sql_cmd.CommandText = query;
+            SQLiteData.Sql_cmd.Parameters.AddWithValue("@IdCadete", cadete.Id);
+            SQLiteDataReader data = SQLiteData.Sql_cmd.ExecuteReader();
+            while (data.Read())
+            {
+                Pedido pedido = new Pedido();
+                Cliente cliente = clientesRepository.GetCliente(Convert.ToInt32(data["idCliente"]));
+                pedido.Id = Convert.ToInt32(data["idPedido"]);
+                pedido.Cliente = cliente;
+                pedido.Cadete = cadete;
+                pedido.Tipo = (Tipo)Convert.ToInt32(data["idTipo"]);
+                pedido.Estado = (Estado)Convert.ToInt32(data["idEstado"]);
+                pedido.Descripcion = data["descripcion"].ToString();
+                pedido.TieneCuponDeDescuento = Convert.ToBoolean(data["cupon"]);
+                ListaDePedidos.Add(pedido);
+            }
+            SQLiteData.CloseConnection();
+            return ListaDePedidos;
+        }
+
+        public List<Pedido> GetPedidosDeCliente(Cliente cliente)
+        {
+            List<Pedido> ListaDePedidos = new List<Pedido>();
+            CadetesRepository cadetesRepository = new CadetesRepository();
+            string query = @"SELECT idPedido, idCliente, idCadete, idTipo, idEstado, descripcion, cupon
+                             FROM Pedidos
+                             WHERE idCliente = @IdCliente AND activo = 1;";
+            SQLiteData.OpenConnection();
+            SQLiteData.Sql_cmd.CommandText = query;
+            SQLiteData.Sql_cmd.Parameters.AddWithValue("@IdCadete", cliente.Id);
+            SQLiteDataReader data = SQLiteData.Sql_cmd.ExecuteReader();
+            while (data.Read())
+            {
+                Pedido pedido = new Pedido();
+                Cadete cadete = cadetesRepository.GetCadete(Convert.ToInt32(data["idCadete"]));
+                pedido.Id = Convert.ToInt32(data["idPedido"]);
+                pedido.Cliente = cliente;
+                pedido.Cadete = cadete;
+                pedido.Tipo = (Tipo)Convert.ToInt32(data["idTipo"]);
+                pedido.Estado = (Estado)Convert.ToInt32(data["idEstado"]);
+                pedido.Descripcion = data["descripcion"].ToString();
+                pedido.TieneCuponDeDescuento = Convert.ToBoolean(data["cupon"]);
+                ListaDePedidos.Add(pedido);
+            }
+            SQLiteData.CloseConnection();
+            return ListaDePedidos;
+        }
+
     }
 }

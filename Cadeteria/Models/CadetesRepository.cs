@@ -26,6 +26,8 @@ namespace Cadeteria.Models
                 string telefono = data["telefono"].ToString();
                 Vehiculo vehiculo = (Vehiculo)Convert.ToInt32(data["idVehiculo"]);
                 Cadete nuevoCadete = new Cadete(id, nombre, direccion, telefono, vehiculo);
+                nuevoCadete.CantPedidosAsignados = CantidadDePedidos(id, Estado.Pendiente);
+                nuevoCadete.CantPedidosEntregados = CantidadDePedidos(id, Estado.Entregado);
                 ListaDeCadetes.Add(nuevoCadete);
             }
             SQLiteData.CloseConnection();
@@ -92,6 +94,25 @@ namespace Cadeteria.Models
             }
             SQLiteData.CloseConnection();
             return cadete;
+        }
+
+        public int CantidadDePedidos(int idCadete, Estado estado)
+        {
+            int cantidad = 0;
+            string query = @"SELECT count(idPedido) AS cantPedidos
+                             FROM Pedidos
+                             INNER JOIN EstadosDePedidos USING(idEstado)
+                             WHERE idCadete = @idCadete AND estado LIKE @Estado AND activo = 1;";
+
+            SQLiteData.OpenConnection();
+            SQLiteData.Sql_cmd.CommandText = query;
+            SQLiteData.Sql_cmd.Parameters.AddWithValue("@idCadete", idCadete);
+            SQLiteData.Sql_cmd.Parameters.AddWithValue("@Estado", estado.ToString());
+            SQLiteDataReader data = SQLiteData.Sql_cmd.ExecuteReader();
+            data.Read();
+            cantidad = Convert.ToInt32(data["cantPedidos"]);
+            data.Close();
+            return cantidad;
         }
     }
 }
